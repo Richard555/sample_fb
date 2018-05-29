@@ -1,6 +1,9 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
 #include <linux/fb.h>
 #include <sys/mman.h>
 
@@ -13,7 +16,8 @@ int main(int argc, char* argv[])
     char *fbp = 0;
     int x = 0, y = 0;
     long int location = 0;
-
+	int ret = 0;
+	
     // Open the file for reading and writing
     fbfd = open("/dev/fb0", O_RDWR);//打開framebuffer，取得其fd
     if (!fbfd) {
@@ -69,6 +73,11 @@ int main(int argc, char* argv[])
             }
         }
     munmap(fbp, screensize); //歸還記憶體
+
+	int arg = 0 ; 
+	ret=ioctl(fbfd, FBIO_WAITFORVSYNC, &arg);
+	printf ("FBIO_WAITFORVSYNC ret = %d \n", ret);
+		
     close(fbfd);//記得要關閉framebuffer的fd
     return 0;
 }
