@@ -75,7 +75,9 @@ int main(int argc, char* argv[])
     munmap(fbp, screensize); //歸還記憶體
 
 	int arg = 0 ; 
+	for (x=0;x<=60;x++){
 	ret=ioctl(fbfd, FBIO_WAITFORVSYNC, &arg);
+	}
 	printf ("FBIO_WAITFORVSYNC ret = %d \n", ret);
 		
     close(fbfd);//記得要關閉framebuffer的fd
